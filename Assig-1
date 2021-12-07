@@ -1,0 +1,47 @@
+library(ggplot2)
+library(dplyr)
+
+naval_data=read.csv("naval_vessel.csv",header=FALSE)#Importing data and renaming the columns
+
+colnames(naval_data)=c(1:16,"Compressor_decay_state_coefficient","Turbine_decay_state_coefficent")
+head(naval_data)
+
+# 1. Que
+naval_data%>%ggplot(aes(Compressor_decay_state_coefficient))+geom_density()+labs(title="Density plot")    
+#Plot-1,Density Plot
+
+# Answer: The density plot is close to a continous uniform distribution.
+
+#2 Que
+  
+pairs(naval_data[,1:18]) 
+#Plot-2 Scatterplot Matrix
+
+#3 Que
+scaled_naval_data<-naval_data
+
+
+for(i in  1:ncol(scaled_naval_data)){ 
+  scaled_naval_data[,i]=(scaled_naval_data[,i]-min(scaled_naval_data[,i]))/(max(scaled_naval_data[,i])-min(scaled_naval_data[,i]))
+  }
+head(scaled_naval_data)
+
+#4 Que
+
+naval_data%>%summarise(mean_Compressor_decay_state_coefficient=mean(Compressor_decay_state_coefficient),
+                       median_Compressor_decay_state_coefficient=median(Compressor_decay_state_coefficient),
+                       mean_Turbine_decay_state_coefficent=mean(Turbine_decay_state_coefficent),
+                       median_Turbine_decay_state_coefficent=median(Turbine_decay_state_coefficent))
+
+#5 Que
+boston=Boston
+head(boston)
+
+
+#6 Que
+#a bit
+titanic=data.frame(Titanic)
+head(titanic)
+titanic%>%filter(Sex=="Male" & Age=="Child" & Survived=="Yes")%>%summarise(male_child_survived=sum(Freq))
+#b bit
+titanic%>%filter(Class=="1st")%>%summarise(total_1st_class=sum(Freq))
